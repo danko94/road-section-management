@@ -1,0 +1,88 @@
+<html>
+  <body onload="xstart()">
+    <table id="openConversations" border="1" style="background-color: burlywood;">
+      <tr>
+          <th>Car Type</th>
+          <th>Start Section</th>
+          <th>Time</th>
+          <th>Weekday</th>
+          <th>Special Day</th>
+          <th>End</th>
+          <th>Prediction</th>
+      </tr>
+  </table>
+  
+  </body>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script>
+  function initSocket() {
+      //socket is global
+      socket = io.connect();
+      //alert("connected");
+  }
+
+  
+</script>
+<script>
+  function xstart(){
+    initSocket()
+    start()
+  }
+
+  
+  function start(){
+    
+    var tr = document.getElementById('openConversations').insertRow();
+    tr.id = 'nr'
+            var cType = tr.insertCell(0);
+            var cStart_sec = tr.insertCell(1);
+            var cTime = tr.insertCell(2);
+            var cWeekday = tr.insertCell(3);
+            var cSpecial = tr.insertCell(4);
+            var cEnd = tr.insertCell(5);
+            var cPred = tr.insertCell(6)
+            cPred.id = 'pred'
+    cType.innerHTML = "<select><option value='Truck'>Truck</option><option value='Van'>Van</option><option value='Private'>Private</option></select>";
+    cStart_sec.innerHTML = "<input type='number' min='1' max='5' value='1'/>";
+    cTime.innerHTML = "<input type='time' value='04:20'>";
+    cSpecial.innerHTML = "<select><option value='0'>No</option><option value='1'>Yes</option></select>";
+    cWeekday.innerHTML = '<select name="weekday" id="weekday"><option value="sunday">Sunday</option><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option></select>';
+    cEnd.innerHTML = "<button onclick='reportEndCall(this.parentNode.parentNode)'>Send</button>";
+
+  }
+
+  function finish(p){
+    var cPred = document.getElementById('pred')
+    cPred.innerHTML = p-1
+  }
+
+
+  function reportEndCall(row) {
+
+            var message = {};
+            
+            message.cType = row.cells[0].getElementsByTagName('select')[0].value;
+            message.start_section = row.cells[1].getElementsByTagName('input')[0].value;
+            message.time = row.cells[2].getElementsByTagName('input')[0].value;
+            message.weekday = row.cells[3].getElementsByTagName('select')[0].value;
+            message.special = row.cells[4].getElementsByTagName('select')[0].value;
+            
+            
+            socket.emit("prediction", message);
+            console.log(message)
+
+            
+            socket.on("hello", (msg) => {
+              console.log('hello pred is ' + msg)
+              finish(msg)
+            })
+           
+        }
+ 
+  
+
+  </script>
+
+
+</html>

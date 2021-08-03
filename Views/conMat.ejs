@@ -1,0 +1,115 @@
+<html>
+  <meta http-equiv="refresh" content="2">
+  <body onload=initSocket()>
+     
+    <%= startEval() %>
+    <style type="text/css">
+      .tg  {border-collapse:collapse;border-spacing:0;}
+      .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+        overflow:hidden;padding:10px 5px;word-break:normal;}
+      .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+        font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+      .tg .tg-symt{background-color:#000000;border-color:inherit;color:#000000;text-align:left;vertical-align:top}
+      .tg .tg-7l3t{background-color:#34cdf9;border-color:inherit;font-size:26px;text-align:left;vertical-align:top}
+      .tg .tg-7od5{background-color:#9aff99;border-color:inherit;text-align:left;vertical-align:top}
+      .tg .tg-10h5{background-color:#ffc702;border-color:inherit;font-size:26px;font-weight:bold;text-align:left;vertical-align:top}
+      .tg .tg-jew0{background-color:#fd6864;border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+      .tg .tg-0i6e{background-color:#000000;border-color:inherit;color:#000000;font-weight:bold;text-align:left;vertical-align:top}
+      .tg .tg-ofk6{background-color:#ffc702;border-color:inherit;font-size:26px;text-align:left;vertical-align:top}
+      .tg .tg-kbue{background-color:#9aff99;border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+      .tg .tg-smvl{background-color:#fd6864;border-color:inherit;text-align:left;vertical-align:top}
+      </style>
+      <table class="tg" style="table-layout: fixed; width: 714px">
+      <colgroup>
+      <col style="width: 117px">
+      <col style="width: 62px">
+      <col style="width: 93px">
+      <col style="width: 101px">
+      <col style="width: 105px">
+      <col style="width: 128px">
+      <col style="width: 108px">
+      </colgroup>
+      <thead>
+    
+      
+      
+        <tr>
+          <th class="tg-symt"></th>
+          <th class="tg-7l3t" colspan="6"><span style="font-weight:bold">Predicted Exit Section</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-7l3t" rowspan="6"><span style="font-weight:bold">Actual</span><br><span style="font-weight:bold">Exit</span><br><span style="font-weight:bold">Section</span></td>
+          <td class="tg-0i6e"></td>
+          <td class="tg-10h5">1</td>
+          <td class="tg-10h5"><span style="font-weight:bold">2</span></td>
+          <td class="tg-10h5">3</td>
+          <td class="tg-10h5">4</td>
+          <td class="tg-ofk6"><span style="font-weight:bold">5</span></td>
+        </tr>
+        <tr>
+          <td class="tg-10h5"><span style="font-weight:bold">1</span></td>
+          <td class="tg-kbue"><%= predictions[0][0] %></td>
+          <td class="tg-jew0"><%= predictions[0][1] %></td>
+          <td class="tg-jew0"><%= predictions[0][2] %></td>
+          <td class="tg-jew0"><%= predictions[0][3] %></td>
+          <td class="tg-smvl"><%= predictions[0][4] %></td>
+        </tr>
+        <tr>
+          <td class="tg-10h5"><span style="font-weight:bold">2</span></td>
+          <td class="tg-jew0"><%= predictions[1][0] %></td>
+          <td class="tg-kbue"><%= predictions[1][1] %></td>
+          <td class="tg-jew0"><%= predictions[1][2] %></td>
+          <td class="tg-jew0"><%= predictions[1][3] %></td>
+          <td class="tg-smvl"><%= predictions[1][4] %></td>
+        </tr>
+        <tr>
+          <td class="tg-10h5">3</td>
+          <td class="tg-jew0"><%= predictions[2][0] %></td>
+          <td class="tg-jew0"><%= predictions[2][1] %></td>
+          <td class="tg-kbue"><%= predictions[2][2] %></td>
+          <td class="tg-jew0"><%= predictions[2][3] %></td>
+          <td class="tg-smvl"><%= predictions[2][4] %></td>
+        </tr>
+        <tr>
+          <td class="tg-10h5">4</td>
+          <td class="tg-jew0"><%= predictions[3][0] %></td>
+          <td class="tg-jew0"><%= predictions[3][1] %></td>
+          <td class="tg-jew0"><%= predictions[3][2] %></td>
+          <td class="tg-kbue"><%= predictions[3][3] %></td>
+          <td class="tg-smvl"><%= predictions[3][4] %></td>
+        </tr>
+        <tr>
+          <td class="tg-ofk6"><span style="font-weight:bold">5</span></td>
+          <td class="tg-jew0"><%= predictions[4][0] %></td>
+          <td class="tg-jew0"><%= predictions[4][1] %></td>
+          <td class="tg-jew0"><%= predictions[4][2] %></td>
+          <td class="tg-jew0"><%= predictions[4][3] %></td>
+          <td class="tg-7od5"><%= predictions[4][4] %></td>
+        </tr>
+      </tbody>
+      </table>
+      <br>
+      <h3>
+        ACCURACY: <%= accuracy %> %
+      </h3>
+      
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<!-- <script src='../confusion.js'></script> -->
+<script> 
+
+function reset() {
+  socket.emit("reset");
+} 
+
+function initSocket() {
+      socket = io.connect();
+      //startEval()      
+}
+</script>
+
+  <button onClick="reset()" id="next" >RESET</button>
+
+</html>
